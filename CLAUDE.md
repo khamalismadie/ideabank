@@ -19,6 +19,8 @@ npm test                 # Run Vitest tests
 npm run db:push          # Push Prisma schema to DB
 npm run db:seed          # Seed sample data
 npm run db:studio        # Open Prisma Studio (GUI)
+git tag -a v0.1.0 -m "Release v0.1.0"  # Create version tag
+git push origin main --tags              # Push tags
 ```
 
 ## Architecture
