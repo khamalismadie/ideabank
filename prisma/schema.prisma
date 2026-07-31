@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Idea {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  content     String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  connections Connection[] @relation("Source")
+  targetConns Connection[] @relation("Target")
+  tags        Tag[]
+}
+
+model Connection {
+  id           String   @id @default(uuid())
+  sourceId     String
+  targetId     String
+  relationship String   @default("related")
+  source       Idea     @relation("Source", fields: [sourceId], references: [id], onDelete: Cascade)
+  target       Idea     @relation("Target", fields: [targetId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@unique([sourceId, targetId, relationship])
+}
+
+model Tag {
+  id        String @id @default(uuid())
+  name      String @unique
+  color     String @default("#6366f1")
+  createdAt DateTime @default(now())
+  ideas     Idea[]
+}
