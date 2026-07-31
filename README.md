@@ -153,6 +153,12 @@ Full API spec: [PRD.md](PRD.md)
 - [Environment Variables](docs/env-reference.md) - All configuration options
 - [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
 
+## Related Projects
+
+| Project | Description |
+|---------|-------------|
+| [Component Atlas](https://github.com/khamalismadie/Component-atlas) | Interactive visual map for React codebases — dependency graphs, re-render heatmaps, bundle size analysis |
+
 ## Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
