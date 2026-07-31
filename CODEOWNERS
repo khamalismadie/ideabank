@@ -1,0 +1,14 @@
+# Default owners for everything in the repo
+* @khamal
+
+# API routes
+/src/app/api/ @khamal
+
+# Database
+/prisma/ @khamal
+
+# CI/CD
+/.github/ @khamal
+
+# Documentation
+*.md @khamal

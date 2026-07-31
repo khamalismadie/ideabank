@@ -8,7 +8,7 @@ If you discover a security vulnerability in Ideabank, please report it responsib
 
 ### How to Report
 
-Email: [your-email@domain.com] with:
+Email: security@ideabank.dev with:
 
 - Description of the vulnerability
 - Steps to reproduce
