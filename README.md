@@ -1,10 +1,12 @@
-# Ideabank 💡
+# Ideabank
 
 > Mindmap-powered idea management system with AI assistance.
 
-[![CI](https://github.com/khamal/ideabank/actions/workflows/ci.yml/badge.svg)](https://github.com/khamal/ideabank/actions/workflows/ci.yml)
-[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/khamalismadie/ideabank/actions/workflows/ci.yml/badge.svg)](https://github.com/khamalismadie/ideabank/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/khamalismadie/ideabank/actions/workflows/codeql.yml/badge.svg)](https://github.com/khamalismadie/ideabank/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![GitHub Stars](https://img.shields.io/github/stars/khamalismadie/ideabank)](https://github.com/khamalismadie/ideabank)
 
 ## What is Ideabank?
 
@@ -12,12 +14,12 @@ Ideabank helps you capture, connect, and develop your ideas visually using mindm
 
 ### Features
 
-- 🗺️ **Visual Mindmap** — See your ideas as an interactive graph
-- 🔗 **Connect Ideas** — Link related concepts with meaningful relationships
-- 🤖 **AI Expand** — Let AI help develop your ideas into sub-concepts
-- 🔍 **Smart Search** — Find ideas by keyword, tag, or connection
-- 🏷️ **Tags** — Organize ideas with custom labels
-- 📤 **Export** — Download as PNG, PDF, or JSON
+- **Visual Mindmap** — Interactive node-based graph for idea visualization
+- **Connect Ideas** — Link concepts with relationships (parent, related, causes, inspires)
+- **AI Expand** — Let AI help develop your ideas into sub-concepts
+- **Smart Search** — Find ideas by keyword, tag, or connection
+- **Tags** — Organize ideas with custom labels
+- **Export** — Download as PNG, PDF, or JSON
 
 ## Getting Started
 
@@ -27,11 +29,11 @@ Ideabank helps you capture, connect, and develop your ideas visually using mindm
 - Docker (for PostgreSQL)
 - npm or yarn
 
-### Installation
+### Quick Start
 
 ```bash
 # Clone
-git clone https://github.com/khamal/ideabank.git
+git clone https://github.com/khamalismadie/ideabank.git
 cd ideabank
 
 # Install dependencies
@@ -100,8 +102,8 @@ ideabank/
 ├── prisma/
 │   ├── schema.prisma     # Database schema
 │   └── seed.ts           # Seed script
-├── .github/
-│   └── workflows/ci.yml  # CI pipeline
+├── docs/                 # Documentation
+├── .github/              # CI/CD, templates
 └── docker-compose.yml    # Local PostgreSQL
 ```
 
@@ -143,6 +145,13 @@ GET    /api/mindmap         # Get full graph (nodes + edges)
 ```
 
 Full API spec: [PRD.md](PRD.md)
+
+## Documentation
+
+- [Architecture](docs/architecture.md) - System design and decisions
+- [Deployment](docs/deployment.md) - Vercel, Docker, Railway, self-hosted
+- [Environment Variables](docs/env-reference.md) - All configuration options
+- [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
 
 ## Contributing
 
