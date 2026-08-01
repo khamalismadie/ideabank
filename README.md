@@ -158,6 +158,7 @@ Full API spec: [PRD.md](PRD.md)
 | Project | Description |
 |---------|-------------|
 | [Component Atlas](https://github.com/khamalismadie/Component-atlas) | Interactive visual map for React codebases — dependency graphs, re-render heatmaps, bundle size analysis |
+| [PromptKit](https://clawhub.ai/khamalismadie/skills/promptkit) | Auto-selects and applies prompting frameworks from 56 options for structured AI prompts |
 
 ## Contributing
 
