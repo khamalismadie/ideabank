@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const query = Object.fromEntries(searchParams)
     const filters = validate(IdeaFilterSchema, query)
 
-    const skip = (filters.page - 1) * filters.limit
+    const skip = ((filters.page ?? 1) - 1) * (filters.limit ?? 20)
 
     const where = {
       ...(filters.search && {
@@ -25,13 +25,18 @@ export async function GET(request: NextRequest) {
       }),
     }
 
+    const page = filters.page ?? 1
+    const limit = filters.limit ?? 20
+    const sortBy = filters.sortBy ?? 'createdAt'
+    const sortOrder = filters.sortOrder ?? 'desc'
+
     const [ideas, total] = await Promise.all([
       prisma.idea.findMany({
         where,
         include: { tags: true, connections: true },
         skip,
-        take: filters.limit,
-        orderBy: { [filters.sortBy]: filters.sortOrder },
+        take: limit,
+        orderBy: { [sortBy]: sortOrder },
       }),
       prisma.idea.count({ where }),
     ])
@@ -39,10 +44,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       data: ideas,
       pagination: {
-        page: filters.page,
-        limit: filters.limit,
+        page,
+        limit,
         total,
-        pages: Math.ceil(total / filters.limit),
+        pages: Math.ceil(total / limit),
       },
     })
   } catch (error) {

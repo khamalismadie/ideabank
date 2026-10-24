@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         sourceId_targetId_relationship: {
           sourceId: data.sourceId,
           targetId: data.targetId,
-          relationship: data.relationship,
+          relationship: data.relationship ?? 'related',
         },
       },
     })
@@ -41,7 +41,11 @@ export async function POST(request: NextRequest) {
     }
 
     const connection = await prisma.connection.create({
-      data,
+      data: {
+        sourceId: data.sourceId,
+        targetId: data.targetId,
+        relationship: data.relationship!,
+      },
       include: { source: true, target: true },
     })
 
