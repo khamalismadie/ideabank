@@ -6,6 +6,13 @@
 - PostgreSQL 16+ (or use Docker)
 - npm or yarn
 
+## Tech Stack
+
+- **Frontend:** Next.js 14 + React Flow + Zustand + Tailwind CSS
+- **Backend:** Next.js API Routes
+- **Database:** PostgreSQL + Prisma ORM
+- **Hosting:** Vercel (recommended), Docker, Railway, or self-hosted
+
 ## Option 1: Vercel (Recommended)
 
 ### Setup
@@ -86,7 +93,7 @@ volumes:
 
 ```bash
 # Clone repository
-git clone https://github.com/khamal/ideabank.git
+git clone https://github.com/khamalismadie/ideabank.git
 cd ideabank
 
 # Install dependencies
@@ -126,7 +133,10 @@ server {
 ## Database Migrations
 
 ```bash
-# Create migration
+# Push schema (fast, for development)
+npm run db:push
+
+# Create migration (with history)
 npx prisma migrate dev --name migration_name
 
 # Apply to production
@@ -136,14 +146,14 @@ npx prisma migrate deploy
 npx prisma migrate reset
 ```
 
-## Monitoring
-
-### Health Check
+## Health Check
 
 ```bash
 curl https://your-domain/api/health
 # {"status":"ok","timestamp":"...","version":"0.1.0"}
 ```
+
+## Monitoring
 
 ### Logs
 
@@ -153,6 +163,9 @@ pm2 logs ideabank
 
 # Docker logs
 docker-compose logs -f app
+
+# Vercel
+# View in Vercel dashboard
 ```
 
 ## Troubleshooting
@@ -175,3 +188,9 @@ docker-compose logs -f app
 1. Increase Node.js memory: `NODE_OPTIONS="--max-old-space-size=4096"`
 2. Check for memory leaks in logs
 3. Consider scaling horizontally
+
+### React Flow Not Loading
+
+1. Ensure `@xyflow/react` is installed: `npm list @xyflow/react`
+2. Check browser console for errors
+3. Verify Tailwind CSS is configured correctly

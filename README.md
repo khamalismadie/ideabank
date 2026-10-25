@@ -14,12 +14,12 @@ Ideabank helps you capture, connect, and develop your ideas visually using mindm
 
 ### Features
 
-- **Visual Mindmap** — Interactive node-based graph for idea visualization
+- **Visual Mindmap** — Interactive node-based graph for idea visualization using React Flow
 - **Connect Ideas** — Link concepts with relationships (parent, related, causes, inspires)
-- **AI Expand** — Let AI help develop your ideas into sub-concepts
+- **AI Expand** — Let AI help develop your ideas into sub-concepts (V2)
 - **Smart Search** — Find ideas by keyword, tag, or connection
 - **Tags** — Organize ideas with custom labels
-- **Export** — Download as PNG, PDF, or JSON
+- **Export** — Download as PNG, PDF, or JSON (V1)
 
 ## Getting Started
 
@@ -47,13 +47,14 @@ cp .env.example .env.local
 
 # Setup database
 npm run db:push
-npm run db:seed
 
 # Start dev server
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+Then navigate to the mindmap view at [http://localhost:3000/mindmap](http://localhost:3000/mindmap)
 
 ### Available Commands
 
@@ -72,7 +73,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Tech Stack
 
-- **Frontend:** Next.js 14 + React 18 + React Flow
+- **Frontend:** Next.js 14 + React 18 + React Flow + Zustand + Tailwind CSS
 - **Backend:** Next.js API Routes
 - **Database:** PostgreSQL 16 + Prisma ORM
 - **Validation:** Zod
@@ -92,8 +93,13 @@ ideabank/
 │   │   │   ├── connections/
 │   │   │   ├── tags/
 │   │   │   └── mindmap/
+│   │   ├── mindmap/      # Mindmap visualization page
 │   │   ├── layout.tsx
-│   │   └── page.tsx
+│   │   └── page.tsx      # Landing page
+│   ├── components/       # React components
+│   │   ├── ui/           # Base UI components
+│   │   └── mindmap/      # Mindmap-specific components
+│   ├── store/            # Zustand state management
 │   └── lib/              # Shared utilities
 │       ├── prisma.ts     # Prisma client
 │       ├── validate.ts   # Zod schemas
@@ -142,6 +148,7 @@ GET    /api/tags/:id/ideas  # Get ideas by tag
 ### Mindmap
 ```
 GET    /api/mindmap         # Get full graph (nodes + edges)
+GET    /api/mindmap/:rootId # Get subtree from root idea
 ```
 
 Full API spec: [PRD.md](PRD.md)
@@ -152,6 +159,15 @@ Full API spec: [PRD.md](PRD.md)
 - [Deployment](docs/deployment.md) - Vercel, Docker, Railway, self-hosted
 - [Environment Variables](docs/env-reference.md) - All configuration options
 - [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
+
+## Roadmap
+
+| Phase | Features | Status |
+|-------|----------|--------|
+| MVP | CRUD + Mindmap visualization | ✅ Complete |
+| V1 | Tags + Search + Export | In Progress |
+| V2 | AI features (expand, connect, summarize) | Planned |
+| V3 | Auth + Collaboration | Planned |
 
 ## Related Projects
 

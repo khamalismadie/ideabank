@@ -10,8 +10,9 @@ graph TB
     
     subgraph Frontend
         Client
-        Mindmap[Mindmap Viewer]
-        Forms[Forms]
+        Mindmap[Mindmap Viewer - React Flow]
+        IdeaPanel[Idea Panel]
+        NodeComponent[Idea Node]
     end
     
     subgraph Backend
@@ -37,76 +38,138 @@ ideabank/
 │   │   │   ├── ideas/    # Idea CRUD
 │   │   │   ├── connections/
 │   │   │   ├── tags/
-│   │   │   └── mindmap/
+│   │   │   └── mindmap/  # Mindmap graph API
+│   │   ├── mindmap/      # Mindmap visualization page
 │   │   ├── layout.tsx    # Root layout
 │   │   └── page.tsx      # Home page
+│   ├── components/
+│   │   ├── ui/           # Base UI components
+│   │   │   ├── Button.tsx
+│   │   │   ├── Input.tsx
+│   │   │   ├── Textarea.tsx
+│   │   │   ├── Modal.tsx
+│   │   │   └── Toast.tsx
+│   │   └── mindmap/      # Mindmap-specific components
+│   │       ├── IdeaNode.tsx      # React Flow node
+│   │       ├── IdeaPanel.tsx     # Idea list & CRUD panel
+│   │       └── ConnectionModal.tsx
+│   ├── store/
+│   │   └── mindmap.ts    # Zustand store for mindmap state
 │   └── lib/              # Shared utilities
 │       ├── prisma.ts     # Prisma client singleton
 │       ├── validate.ts   # Zod schemas
 │       ├── errors.ts     # Error handling
 │       └── logger.ts     # Pino logging
 ├── prisma/
-│   ├── schema.prisma     # Database schema
+│   ├── schema.prisma     # Database schema with indexes
 │   └── seed.ts           # Seed script
 ├── docs/                 # Documentation
 ├── .github/              # CI/CD, templates
+├── tailwind.config.js    # Tailwind CSS config
 └── docker-compose.yml    # Local dev
 ```
 
+## Tech Stack Details
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| UI Framework | Next.js 14 | Full-stack React framework |
+| Mindmap | React Flow (@xyflow/react) | Interactive node-based graph |
+| State | Zustand | Lightweight state management |
+| Styling | Tailwind CSS | Utility-first CSS |
+| Database | PostgreSQL + Prisma | ORM with type safety |
+| Validation | Zod | Schema validation |
+| Logging | Pino | Structured logging |
+
 ## Data Flow
 
-### Creating an Idea
+### Creating an Idea (via Mindmap UI)
 
 ```
-1. Client POST /api/ideas
-2. Validate with Zod schema
-3. Insert into PostgreSQL via Prisma
-4. Return created idea as JSON
+1. User fills IdeaPanel form
+2. POST /api/ideas with validated data
+3. Prisma inserts into PostgreSQL
+4. Return created idea
+5. Zustand store updates nodes
+6. React Flow re-renders graph
 ```
 
 ### Fetching Mindmap
 
 ```
 1. Client GET /api/mindmap
-2. Query all ideas and connections
-3. Transform to nodes/edges format
+2. Query all ideas (with tags) and connections
+3. Transform to React Flow nodes/edges format
 4. Return graph structure
+5. Store synced to React Flow state
+```
+
+### Creating Connection
+
+```
+1. User drags from one node to another
+2. ConnectionModal opens for relationship type
+3. POST /api/connections
+4. Prisma creates connection (with unique constraint)
+5. Edge added to Zustand store
+6. React Flow renders animated edge
 ```
 
 ## Design Decisions
 
-### Why Next.js App Router?
+### Why React Flow?
 
-- Server components reduce client JS
-- Built-in API routes
-- File-based routing
-- Strong TypeScript support
+- Purpose-built for node-based UIs
+- Handles edge/node interactions out of the box
+- Customizable node rendering
+- Built-in zoom, pan, minimap
 
-### Why PostgreSQL?
+### Why Zustand over Redux/Context?
 
-- ACID compliance
-- JSON support for flexible data
-- Strong ecosystem
-- Easy deployment (Railway, Supabase)
+- Minimal boilerplate
+- No providers needed
+- TypeScript-friendly
+- Good performance with small-to-medium state
 
-### Why Zod over Joi?
+### Why Tailwind CSS?
 
-- TypeScript-first
-- Smaller bundle size
-- Better inference
-- Built-in transforms
+- Rapid UI development
+- Consistent design system
+- Small bundle size (purged)
+- Easy theming
+
+## API Design
+
+All endpoints return JSON and use consistent error formatting:
+
+```typescript
+// Success
+{ "id": "...", "title": "...", ... }
+
+// Error
+{ "error": "Message", "details": [...] }
+
+// Validation Error
+{ "error": "Validation failed", "details": [{ "field": "title", "message": "Required" }] }
+```
 
 ## Security
 
-- Input validation on all API routes
-- Parameterized queries via Prisma
-- Rate limiting (planned)
-- CORS configuration (planned)
-- Security headers (planned)
+- Input validation on all API routes via Zod
+- Parameterized queries via Prisma (SQL injection prevention)
+- Request ID tracking for audit logs
+- CORS configured for same-origin (expand for API consumers)
+- Rate limiting (planned for V2)
 
 ## Performance
 
+- Database indexes on `Idea.title`, `Idea.createdAt`, `Idea.updatedAt`, `Connection.sourceId`, `Connection.targetId`
 - Prisma connection pooling
-- Response caching (planned)
-- Optimistic updates (planned)
-- Pagination for large datasets
+- React Flow virtualization for large graphs
+- Optimistic UI updates
+
+## Scalability Considerations
+
+- Mindmap endpoint loads ALL nodes by default (suitable for <500 nodes)
+- For larger graphs: implement viewport-based lazy loading
+- Consider WebSocket/SSE for real-time collaboration (V3)

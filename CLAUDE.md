@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Ideabank** — open-source mindmap-powered idea management system with AI assistance.
 
-**License:** MIT | **Repo:** github.com/khamal/ideabank
+**License:** MIT | **Repo:** github.com/khamalismadie/ideabank
 
 ## Commands
 
@@ -26,6 +26,8 @@ git push origin main --tags              # Push tags
 ## Architecture
 
 - **Framework:** Next.js 14 with App Router
+- **Frontend:** React Flow for mindmap visualization, Zustand for state
+- **Styling:** Tailwind CSS
 - **Database:** PostgreSQL + Prisma ORM (schema: `prisma/schema.prisma`)
 - **API Routes:** `src/app/api/` — RESTful endpoints
 - **Validation:** Zod schemas in `src/lib/validate.ts`
@@ -44,6 +46,17 @@ git push origin main --tags              # Push tags
 - Errors extend `AppError` class and return structured JSON
 - Request IDs via `x-request-id` header for tracing
 - Prisma client singleton in `src/lib/prisma.ts`
+- Zustand store in `src/store/mindmap.ts` for mindmap state
+
+## UI Components
+
+- `src/components/ui/` — Base components (Button, Input, Textarea, Modal, Toast)
+- `src/components/mindmap/` — Mindmap components (IdeaNode, IdeaPanel, ConnectionModal)
+
+## Pages
+
+- `/` — Landing page
+- `/mindmap` — Interactive mindmap visualization (MVP feature)
 
 ## External Drive
 

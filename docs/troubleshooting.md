@@ -167,10 +167,87 @@ npx prisma migrate resolve --applied migration_name
 npm run dev  # Look at terminal output
 ```
 
+---
+
+## Mindmap-Specific Issues
+
+### 11. Mindmap Page Not Loading
+
+**Error:** Blank page at `/mindmap` or React Flow errors
+
+**Solutions:**
+1. Verify dependencies installed:
+   ```bash
+   npm list @xyflow/react zustand
+   ```
+
+2. Check for build errors:
+   ```bash
+   npm run build
+   ```
+
+3. Clear browser cache or try incognito mode
+
+### 12. Ideas Not Appearing on Mindmap
+
+**Possible causes:**
+1. Database empty — create some ideas first via `/api/ideas`
+2. API error — check browser Network tab
+3. State not synced — refresh page
+
+**Solution:**
+```bash
+# Check if API returns data
+curl http://localhost:3000/api/mindmap
+
+# Should return: { "nodes": [...], "edges": [...] }
+```
+
+### 13. Cannot Connect Ideas
+
+**Error:** Connection modal doesn't appear or connection fails
+
+**Solutions:**
+1. Drag from the bottom handle of one node to the top handle of another
+2. Check browser console for errors
+3. Verify `POST /api/connections` works:
+   ```bash
+   curl -X POST http://localhost:3000/api/connections \
+     -H "Content-Type: application/json" \
+     -d '{"sourceId":"<id1>","targetId":"<id2>","relationship":"related"}'
+   ```
+
+### 14. React Flow Performance Issues
+
+**Symptoms:** Slow rendering with many nodes, laggy interactions
+
+**Solutions:**
+1. Reduce visible nodes (use subtree API for large graphs)
+2. Disable animations: `defaultEdgeOptions={{ animated: false }}`
+3. Increase React Flow performance settings
+
+### 15. Node Positions Not Saving
+
+**Note:** Current MVP does not persist node positions. Refreshing page resets layout.
+
+**Workaround:** This is by design for MVP. Positions will be persisted in V1.
+
+### 16. Database Indexes Missing
+
+**Error:** Slow queries as data grows
+
+**Solution:**
+```bash
+# Apply schema changes (includes new indexes)
+npm run db:push
+```
+
+---
+
 ## Getting Help
 
-1. Search [GitHub Issues](https://github.com/khamal/ideabank/issues)
-2. Check [GitHub Discussions](https://github.com/khamal/ideabank/discussions)
+1. Search [GitHub Issues](https://github.com/khamalismadie/ideabank/issues)
+2. Check [GitHub Discussions](https://github.com/khamalismadie/ideabank/discussions)
 3. Open a new issue with:
    - Error message
    - Steps to reproduce
@@ -188,9 +265,9 @@ LOG_LEVEL=debug npm run dev
 
 ### Slow Queries
 
-1. Check database indexes
+1. Check database indexes are applied
 2. Use Prisma's `include` instead of multiple queries
-3. Implement pagination
+3. Implement pagination for large datasets
 
 ### High Memory
 
