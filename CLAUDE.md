@@ -47,4 +47,4 @@ git push origin main --tags              # Push tags
 
 ## External Drive
 
-Project location: `/Volumes/khamal/projects/Ideabank/`
+Project location: `/Volumes/Maddai/Projects/Ideabank/`

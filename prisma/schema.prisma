@@ -17,6 +17,10 @@ model Idea {
   connections Connection[] @relation("Source")
   targetConns Connection[] @relation("Target")
   tags        Tag[]
+
+  @@index([title])
+  @@index([createdAt])
+  @@index([updatedAt])
 }
 
 model Connection {
@@ -29,6 +33,8 @@ model Connection {
   createdAt    DateTime @default(now())
 
   @@unique([sourceId, targetId, relationship])
+  @@index([sourceId])
+  @@index([targetId])
 }
 
 model Tag {
