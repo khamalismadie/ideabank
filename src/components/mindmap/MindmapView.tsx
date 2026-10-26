@@ -12,6 +12,7 @@ import { AiExpandModal } from './AiExpandModal'
 import { TagFilter } from './TagFilter'
 import { SearchBar } from './SearchBar'
 import { ExportMenu } from './ExportMenu'
+import { AiConnectButton } from './AiConnectButton'
 
 function MindmapContent() {
   const { graph, isLoading, isError } = useMindmap()
@@ -41,6 +42,7 @@ function MindmapContent() {
         <TagFilter />
         <div className="flex-1" />
         <ExportMenu />
+        <AiConnectButton />
         <button
           onClick={() => setIsCreateModalOpen(true)}
           className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"
