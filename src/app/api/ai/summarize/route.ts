@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 const AI_PROVIDER = process.env.AI_PROVIDER ?? 'openai'
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY ?? process.env.ANTHROPIC_API_KEY
 
 interface SummarizeRequest {
   rootId: string
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'rootId is required' }, { status: 400 })
     }
 
-    // Fetch root and all connected ideas recursively
+    // Fetch root and all connected ideas recursively (both directions)
     const getSubtree = async (id: string, visited = new Set<string>()): Promise<any[]> => {
       if (visited.has(id)) return []
       visited.add(id)
@@ -26,12 +26,18 @@ export async function POST(request: Request) {
         include: {
           tags: true,
           connections: { where: { sourceId: id } },
+          targetConns: { where: { targetId: id } },
         },
       })
       if (!idea) return []
 
+      const childConnections = [
+        ...idea.connections.map((c) => ({ targetId: c.targetId, relationship: c.relationship })),
+        ...idea.targetConns.map((c) => ({ targetId: c.sourceId, relationship: c.relationship })),
+      ]
+
       const children = await Promise.all(
-        idea.connections.map((c) => getSubtree(c.targetId, visited))
+        childConnections.map((c) => getSubtree(c.targetId, visited))
       )
 
       return [
@@ -39,7 +45,7 @@ export async function POST(request: Request) {
           id: idea.id,
           title: idea.title,
           description: idea.description,
-          relationship: idea.connections[0]?.relationship,
+          relationship: childConnections[0]?.relationship,
         },
         ...children.flat(),
       ]

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 const AI_PROVIDER = process.env.AI_PROVIDER ?? 'openai'
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY ?? process.env.ANTHROPIC_API_KEY
 
 interface SuggestRequest {
   ideaId?: string
@@ -104,7 +104,13 @@ Respond ONLY with valid JSON:
     const cleaned = rawResponse.replace(/```json\n?|```\n?/g, '').trim()
     const parsed = JSON.parse(cleaned)
 
-    // Map indices back to idea IDs
+    // Get existing connections to avoid duplicates
+    const existingConns = await prisma.connection.findMany({
+      select: { sourceId: true, targetId: true },
+    })
+    const existingSet = new Set(existingConns.map((c) => `${c.sourceId}::${c.targetId}`))
+
+    // Map indices back to idea IDs, filter out existing connections
     const suggestions = (parsed.suggestions ?? [])
       .slice(0, limit)
       .map((s: any) => ({
@@ -115,7 +121,14 @@ Respond ONLY with valid JSON:
         relationship: s.relationship,
         reason: s.reason,
       }))
-      .filter((s: any) => s.sourceId && s.targetId && s.sourceId !== s.targetId)
+      .filter(
+        (s: any) =>
+          s.sourceId &&
+          s.targetId &&
+          s.sourceId !== s.targetId &&
+          !existingSet.has(`${s.sourceId}::${s.targetId}`) &&
+          !existingSet.has(`${s.targetId}::${s.sourceId}`)
+      )
 
     return NextResponse.json({ suggestions })
   } catch (error) {
