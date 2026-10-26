@@ -10,16 +10,18 @@
 
 ## What is Ideabank?
 
-Ideabank helps you capture, connect, and develop your ideas visually using mindmaps. Instead of linear notes, see how your ideas relate to each other.
+Ideabank helps you capture, connect, and develop your ideas visually using mindmaps. Instead of linear notes, see how your ideas relate to each other — powered by AI to help expand and connect concepts.
 
 ### Features
 
 - **Visual Mindmap** — Interactive node-based graph for idea visualization using React Flow
-- **Connect Ideas** — Link concepts with relationships (parent, related, causes, inspires)
-- **AI Expand** — Let AI help develop your ideas into sub-concepts (V2)
+- **Connect Ideas** — Link concepts with relationship types (parent, related, causes, inspires)
+- **AI Expand** — Generate sub-ideas from a parent concept with AI assistance
+- **AI Connect** — Get AI-suggested relationships between your ideas
+- **AI Summarize** — Summarize entire idea branches with key themes
 - **Smart Search** — Find ideas by keyword, tag, or connection
-- **Tags** — Organize ideas with custom labels
-- **Export** — Download as PNG, PDF, or JSON (V1)
+- **Tags** — Organize ideas with custom colored labels
+- **Export** — Download mindmap as PNG, PDF, or JSON
 
 ## Getting Started
 
@@ -27,7 +29,7 @@ Ideabank helps you capture, connect, and develop your ideas visually using mindm
 
 - Node.js 20+
 - Docker (for PostgreSQL)
-- npm or yarn
+- OpenAI or Anthropic API key (optional, for AI features)
 
 ### Quick Start
 
@@ -44,6 +46,7 @@ docker-compose up -d
 
 # Setup environment
 cp .env.example .env.local
+# Edit .env.local and add your DATABASE_URL and optionally OPENAI_API_KEY or ANTHROPIC_API_KEY
 
 # Setup database
 npm run db:push
@@ -54,7 +57,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000)
 
-Then navigate to the mindmap view at [http://localhost:3000/mindmap](http://localhost:3000/mindmap)
+Navigate to the mindmap view at [http://localhost:3000/mindmap](http://localhost:3000/mindmap)
 
 ### Available Commands
 
@@ -78,7 +81,7 @@ Then navigate to the mindmap view at [http://localhost:3000/mindmap](http://loca
 - **Database:** PostgreSQL 16 + Prisma ORM
 - **Validation:** Zod
 - **Logging:** Pino
-- **AI:** OpenAI / Claude API (optional)
+- **AI:** OpenAI GPT-4o-mini / Claude 3.5 Haiku (optional)
 - **Testing:** Vitest
 
 ## Project Structure
@@ -92,13 +95,16 @@ ideabank/
 │   │   │   ├── ideas/    # Idea CRUD
 │   │   │   ├── connections/
 │   │   │   ├── tags/
-│   │   │   └── mindmap/
+│   │   │   ├── mindmap/
+│   │   │   └── ai/       # AI endpoints (expand, connect, summarize)
 │   │   ├── mindmap/      # Mindmap visualization page
 │   │   ├── layout.tsx
 │   │   └── page.tsx      # Landing page
 │   ├── components/       # React components
 │   │   ├── ui/           # Base UI components
-│   │   └── mindmap/      # Mindmap-specific components
+│   │   ├── mindmap/      # Mindmap-specific components
+│   │   └── sidepanel/    # Side panel components
+│   ├── hooks/            # Custom React hooks
 │   ├── store/            # Zustand state management
 │   └── lib/              # Shared utilities
 │       ├── prisma.ts     # Prisma client
@@ -151,6 +157,15 @@ GET    /api/mindmap         # Get full graph (nodes + edges)
 GET    /api/mindmap/:rootId # Get subtree from root idea
 ```
 
+### AI Features
+```
+POST   /api/ai/expand       # Generate sub-ideas from a parent idea
+POST   /api/ai/connect      # Suggest relationships between ideas
+POST   /api/ai/summarize    # Summarize an idea branch
+```
+
+Set `AI_PROVIDER=claude` in environment to use Claude instead of OpenAI. AI features work with mock responses if no API key is configured.
+
 Full API spec: [PRD.md](PRD.md)
 
 ## Documentation
@@ -165,8 +180,8 @@ Full API spec: [PRD.md](PRD.md)
 | Phase | Features | Status |
 |-------|----------|--------|
 | MVP | CRUD + Mindmap visualization | ✅ Complete |
-| V1 | Tags + Search + Export | In Progress |
-| V2 | AI features (expand, connect, summarize) | Planned |
+| V1 | Tags + Search + Export | ✅ Complete |
+| V2 | AI features (expand, connect, summarize) | ✅ Complete |
 | V3 | Auth + Collaboration | Planned |
 
 ## Related Projects
