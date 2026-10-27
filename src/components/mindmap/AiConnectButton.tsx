@@ -36,7 +36,7 @@ export function AiConnectButton() {
       })
       const data = await res.json()
       setSuggestions(data.suggestions ?? [])
-      setSelected(new Set(data.suggestions?.map((_, i) => i) ?? []))
+      setSelected(new Set(data.suggestions?.map((_s: unknown, i: number) => i) ?? []))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to get suggestions')
     } finally {
