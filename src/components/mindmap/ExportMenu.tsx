@@ -3,7 +3,6 @@
 import { useCallback, useState } from 'react'
 import { toPng } from 'html-to-image'
 import { useReactFlow } from '@xyflow/react'
-import { useMindmapStore } from '@/hooks/useMindmapStore'
 
 type ExportFormat = 'png' | 'json' | 'pdf'
 
@@ -11,7 +10,6 @@ export function ExportMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
   const { getNodes, getEdges } = useReactFlow()
-  const { nodes, edges } = useMindmapStore()
 
   const exportPNG = useCallback(async () => {
     const element = document.querySelector('.react-flow') as HTMLElement
@@ -37,7 +35,7 @@ export function ExportMenu() {
 
   const exportJSON = useCallback(() => {
     const graph = {
-      nodes: nodes.map((n) => ({
+      nodes: getNodes().map((n) => ({
         id: n.id,
         type: n.type,
         position: n.position,
@@ -56,7 +54,7 @@ export function ExportMenu() {
     link.click()
     URL.revokeObjectURL(url)
     setIsOpen(false)
-  }, [nodes, getEdges])
+  }, [getNodes, getEdges])
 
   const exportPDF = useCallback(async () => {
     const element = document.querySelector('.react-flow') as HTMLElement

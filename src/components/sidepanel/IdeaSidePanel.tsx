@@ -5,10 +5,17 @@ import { useMindmapStore } from '@/hooks/useMindmapStore'
 import { useIdea, useUpdateIdea, useDeleteIdea } from '@/hooks/useIdeas'
 import { useTags } from '@/hooks/useTags'
 import { IdeaForm } from './IdeaForm'
+import type { CreateIdeaInput } from '@/lib/types'
 
 export function IdeaSidePanel() {
-  const { selectedIdeaId, isSidePanelOpen, setIsSidePanelOpen, setIsAiExpandOpen, setIsConnectionModalOpen } = useMindmapStore()
-  const { idea, isLoading } = useIdea(selectedIdeaId)
+  const {
+    selectedIdeaId,
+    isSidePanelOpen,
+    setIsSidePanelOpen,
+    setIsAiExpandOpen,
+    setIsConnectionModalOpen,
+  } = useMindmapStore()
+  const { idea, isLoading, isError, mutate } = useIdea(selectedIdeaId)
   const { updateIdea } = useUpdateIdea()
   const { deleteIdea } = useDeleteIdea()
   const { tags } = useTags()
@@ -24,7 +31,7 @@ export function IdeaSidePanel() {
     setIsSidePanelOpen(false)
   }
 
-  const handleUpdate = async (data: any) => {
+  const handleUpdate = async (data: CreateIdeaInput) => {
     if (!selectedIdeaId) return
     await updateIdea(selectedIdeaId, data)
     setIsEditing(false)
@@ -42,13 +49,23 @@ export function IdeaSidePanel() {
 
       {isLoading && <div className="text-slate-500 text-sm">Loading...</div>}
 
+      {isError && (
+        <div className="flex flex-col gap-2">
+          <div className="text-sm text-red-500">Failed to load idea</div>
+          <button
+            onClick={() => mutate()}
+            className="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
       {idea && !isEditing && (
         <div className="flex flex-col gap-6">
           <div>
             <h2 className="text-xl font-semibold text-slate-900">{idea.title}</h2>
-            {idea.description && (
-              <p className="mt-2 text-sm text-slate-600">{idea.description}</p>
-            )}
+            {idea.description && <p className="mt-2 text-sm text-slate-600">{idea.description}</p>}
             {idea.tags && idea.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
                 {idea.tags.map((tag) => (

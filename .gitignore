@@ -14,7 +14,11 @@ node_modules/
 dist/
 build/
 .next/
+.next.broken/
 out/
+
+# Corrupted dependency backups (NTFS drive workaround)
+node_modules.broken/
 
 # Logs
 npm-debug.log*
@@ -43,3 +47,4 @@ prisma/*.db
 
 # Misc
 *.log
+.npmrc

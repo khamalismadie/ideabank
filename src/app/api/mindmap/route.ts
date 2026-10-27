@@ -9,21 +9,33 @@ export async function GET(request: NextRequest) {
     const [ideas, connections] = await Promise.all([
       prisma.idea.findMany({
         include: { tags: true },
+        orderBy: { createdAt: 'asc' },
       }),
       prisma.connection.findMany({
         include: { source: true, target: true },
       }),
     ])
 
-    const nodes = ideas.map((idea) => ({
-      id: idea.id,
-      type: 'idea',
-      data: {
-        title: idea.title,
-        description: idea.description,
-        tags: idea.tags,
-      },
-    }))
+    // Give unsaved nodes (x, y both 0) a temporary grid position
+    let gridIndex = 0
+    const nodes = ideas.map((idea) => {
+      const position =
+        idea.x === 0 && idea.y === 0
+          ? { x: 120 * gridIndex, y: 120 * Math.floor(gridIndex / 4) }
+          : { x: idea.x, y: idea.y }
+      if (idea.x === 0 && idea.y === 0) gridIndex++
+      return {
+        id: idea.id,
+        type: 'idea' as const,
+        position,
+        data: {
+          title: idea.title,
+          description: idea.description,
+          tags: idea.tags,
+          status: idea.status,
+        },
+      }
+    })
 
     const edges = connections.map((conn) => ({
       id: conn.id,

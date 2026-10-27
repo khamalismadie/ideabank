@@ -3,10 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { validate, UpdateIdeaSchema } from '@/lib/validate'
 import { handleApiError, NotFoundError } from '@/lib/errors'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const requestId = request.headers.get('x-request-id') || crypto.randomUUID()
 
   try {
@@ -25,10 +22,7 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const requestId = request.headers.get('x-request-id') || crypto.randomUUID()
 
   try {
@@ -45,6 +39,9 @@ export async function PUT(
         ...(data.title && { title: data.title }),
         ...(data.description !== undefined && { description: data.description }),
         ...(data.content !== undefined && { content: data.content }),
+        ...(data.x !== undefined && { x: data.x }),
+        ...(data.y !== undefined && { y: data.y }),
+        ...(data.status && { status: data.status }),
         ...(data.tagIds && {
           tags: { set: data.tagIds.map((tagId) => ({ id: tagId })) },
         }),

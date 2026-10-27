@@ -23,7 +23,8 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "node scripts/fix-esbuild.mjs"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
@@ -43,6 +44,7 @@
     "zustand": "^5.0.16"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
     "@types/node": "^20.12.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
@@ -64,6 +66,15 @@
     ],
     "*.{json,md,yml}": [
       "prettier --write"
+    ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "esbuild",
+      "prisma",
+      "unrs-resolver"
     ]
   }
 }

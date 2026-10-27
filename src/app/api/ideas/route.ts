@@ -67,6 +67,9 @@ export async function POST(request: NextRequest) {
         title: data.title,
         description: data.description,
         content: data.content,
+        x: data.x ?? 0,
+        y: data.y ?? 0,
+        status: data.status,
         ...(data.tagIds && {
           tags: { connect: data.tagIds.map((id) => ({ id })) },
         }),

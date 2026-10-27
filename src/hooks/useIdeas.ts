@@ -20,7 +20,7 @@ export function useIdeas(params?: PaginationParams) {
 }
 
 export function useIdea(id: string | null) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     id ? ['ideas', id] : null,
     () => api.ideas.get(id!),
     { revalidateOnFocus: true }
@@ -29,6 +29,7 @@ export function useIdea(id: string | null) {
     idea: data,
     isLoading,
     isError: error,
+    mutate,
   }
 }
 

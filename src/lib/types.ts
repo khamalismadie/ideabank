@@ -1,5 +1,7 @@
 export type Relationship = 'parent' | 'related' | 'causes' | 'inspires'
 
+export type IdeaStatus = 'inbox' | 'exploring' | 'validated' | 'archived'
+
 export interface Tag {
   id: string
   name: string
@@ -11,6 +13,9 @@ export interface Idea {
   title: string
   description?: string | null
   content?: string | null
+  x: number
+  y: number
+  status: IdeaStatus
   createdAt: string
   updatedAt: string
   tags: Tag[]
@@ -27,6 +32,7 @@ export interface MindmapNodeData extends Record<string, unknown> {
   title: string
   description?: string | null
   tags: Tag[]
+  status: IdeaStatus
 }
 
 export interface MindmapEdgeData extends Record<string, unknown> {
@@ -54,6 +60,9 @@ export interface CreateIdeaInput {
   description?: string
   content?: string
   tagIds?: string[]
+  x?: number
+  y?: number
+  status?: IdeaStatus
 }
 
 export interface CreateConnectionInput {

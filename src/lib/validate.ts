@@ -1,11 +1,16 @@
 import { z } from 'zod'
 
 // Idea schemas
+export const IdeaStatusSchema = z.enum(['inbox', 'exploring', 'validated', 'archived'])
+
 export const CreateIdeaSchema = z.object({
   title: z.string().min(1).max(200),
   description: z.string().max(1000).optional(),
   content: z.string().max(10000).optional(),
   tagIds: z.array(z.string().uuid()).optional(),
+  x: z.number().finite().optional(),
+  y: z.number().finite().optional(),
+  status: IdeaStatusSchema.default('inbox'),
 })
 
 export const UpdateIdeaSchema = z.object({
@@ -13,6 +18,9 @@ export const UpdateIdeaSchema = z.object({
   description: z.string().max(1000).optional(),
   content: z.string().max(10000).optional(),
   tagIds: z.array(z.string().uuid()).optional(),
+  x: z.number().finite().optional(),
+  y: z.number().finite().optional(),
+  status: IdeaStatusSchema.optional(),
 })
 
 // Connection schemas
@@ -25,12 +33,18 @@ export const CreateConnectionSchema = z.object({
 // Tag schemas
 export const CreateTagSchema = z.object({
   name: z.string().min(1).max(50),
-  color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default('#6366f1'),
+  color: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/)
+    .default('#6366f1'),
 })
 
 export const UpdateTagSchema = z.object({
   name: z.string().min(1).max(50).optional(),
-  color: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+  color: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/)
+    .optional(),
 })
 
 // Query schemas

@@ -16,7 +16,9 @@ export function AiExpandModal() {
   const { mutate } = useMindmap()
 
   const [prompt, setPrompt] = useState('')
-  const [suggestions, setSuggestions] = useState<Array<{ title: string; description?: string; relationship: Relationship }>>([])
+  const [suggestions, setSuggestions] = useState<
+    Array<{ title: string; description?: string; relationship: Relationship }>
+  >([])
   const [selected, setSelected] = useState<Set<number>>(new Set())
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -33,7 +35,7 @@ export function AiExpandModal() {
       })
       const data = await result.json()
       setSuggestions(data.ideas ?? [])
-      setSelected(new Set(data.ideas?.map((_: any, i: number) => i) ?? []))
+      setSelected(new Set(data.ideas?.map((_, i) => i) ?? []))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate ideas')
     } finally {
@@ -145,10 +147,15 @@ export function AiExpandModal() {
                 disabled={isLoading || selected.size === 0}
                 className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
               >
-                {isLoading ? 'Creating...' : `Create ${selected.size} Idea${selected.size !== 1 ? 's' : ''}`}
+                {isLoading
+                  ? 'Creating...'
+                  : `Create ${selected.size} Idea${selected.size !== 1 ? 's' : ''}`}
               </button>
               <button
-                onClick={() => { setSuggestions([]); setSelected(new Set()) }}
+                onClick={() => {
+                  setSuggestions([])
+                  setSelected(new Set())
+                }}
                 className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200"
               >
                 Back

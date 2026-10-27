@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import {
   ReactFlow,
   Background,
@@ -14,12 +14,15 @@ import {
   type NodeTypes,
   type EdgeTypes,
 } from '@xyflow/react'
-import { useMindmapStore } from '@/hooks/useMindmapStore'
+import { useMindmapStore, extractPositions } from '@/hooks/useMindmapStore'
+import { useAutosave } from '@/hooks/useAutosave'
 import { IdeaNode } from './IdeaNode'
 import { RelationshipEdge } from './ConnectionEdge'
 
 const nodeTypes: NodeTypes = { idea: IdeaNode as unknown as NodeTypes['idea'] }
-const edgeTypes: EdgeTypes = { relationship: RelationshipEdge as unknown as EdgeTypes['relationship'] }
+const edgeTypes: EdgeTypes = {
+  relationship: RelationshipEdge as unknown as EdgeTypes['relationship'],
+}
 
 interface MindmapCanvasProps {
   initialNodes: Node[]
@@ -30,12 +33,42 @@ export function MindmapCanvas({ initialNodes, initialEdges }: MindmapCanvasProps
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
-  const {
-    activeTagIds,
-    searchQuery,
-    setSelectedIdeaId,
-    setPendingConnection,
-  } = useMindmapStore()
+  const nodesRef = useRef(nodes)
+  nodesRef.current = nodes
+
+  const { activeTagIds, searchQuery, setSelectedIdeaId, setPendingConnection, pendingRestore } =
+    useMindmapStore()
+
+  // Re-sync local canvas state whenever the server graph changes
+  // (AI expand, create/delete, another tab, etc.)
+  useEffect(() => {
+    setNodes(initialNodes)
+    setEdges(initialEdges)
+  }, [initialNodes, initialEdges, setNodes, setEdges])
+
+  const { scheduleSave } = useAutosave(nodes)
+
+  // Apply a pending undo/redo position snapshot
+  useEffect(() => {
+    if (!pendingRestore) return
+    setNodes((nds) =>
+      nds.map((n) => (pendingRestore[n.id] ? { ...n, position: pendingRestore[n.id] } : n))
+    )
+    useMindmapStore.getState().setCurrentPositions(pendingRestore)
+    useMindmapStore.getState().clearPendingRestore()
+    scheduleSave()
+  }, [pendingRestore, setNodes, scheduleSave])
+
+  const onNodeDragStart = useCallback(() => {
+    // Snapshot positions before the drag so undo can return here
+    useMindmapStore.getState().pushHistory(extractPositions(nodesRef.current))
+  }, [])
+
+  const onNodeDragStop = useCallback(() => {
+    const positions = extractPositions(nodesRef.current)
+    useMindmapStore.getState().setCurrentPositions(positions)
+    scheduleSave()
+  }, [scheduleSave])
 
   // Filter nodes based on active tags and search query
   const filteredNodes = nodes.filter((node) => {
@@ -58,11 +91,6 @@ export function MindmapCanvas({ initialNodes, initialEdges }: MindmapCanvasProps
   const filteredEdges = edges.filter(
     (e) => filteredNodeIds.has(e.source) && filteredNodeIds.has(e.target)
   )
-
-  // Sync filtered nodes to store for other components
-  const { setNodes: storeSetNodes, setEdges: storeSetEdges } = useMindmapStore()
-  storeSetNodes(filteredNodes)
-  storeSetEdges(filteredEdges)
 
   const onConnect = useCallback(
     (connection: Connection) => {
@@ -101,6 +129,8 @@ export function MindmapCanvas({ initialNodes, initialEdges }: MindmapCanvasProps
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       onNodeClick={onNodeClick}
+      onNodeDragStart={onNodeDragStart}
+      onNodeDragStop={onNodeDragStop}
       onPaneClick={onPaneClick}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
