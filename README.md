@@ -178,8 +178,8 @@ Full API spec: [PRD.md](docs/01-product/product-requirements.md)
 
 - [Architecture](docs/02-architecture/system-architecture.md) - System design and decisions
 - [Deployment](docs/06-production/deployment.md) - Vercel, Docker, Railway, self-hosted
-- [Environment Variables](docs/env-reference.md) - All configuration options
-- [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
+- [Environment Variables](docs/06-production/env-reference.md) - All configuration options
+- [Troubleshooting](docs/06-production/troubleshooting.md) - Common issues and solutions
 
 ## Roadmap
 

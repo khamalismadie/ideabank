@@ -5,17 +5,21 @@
 ### 1. Database Connection Error
 
 **Error:**
+
 ```
 Can't reach database server at `localhost:5432`
 ```
 
 **Solutions:**
+
 1. Ensure PostgreSQL is running:
+
    ```bash
    docker-compose ps
    ```
 
 2. Check DATABASE_URL format:
+
    ```
    postgresql://username:password@host:port/database?schema=public
    ```
@@ -28,11 +32,13 @@ Can't reach database server at `localhost:5432`
 ### 2. Prisma Client Not Generated
 
 **Error:**
+
 ```
 Cannot find module '@prisma/client'
 ```
 
 **Solution:**
+
 ```bash
 npm run db:generate
 ```
@@ -40,11 +46,13 @@ npm run db:generate
 ### 3. Port Already in Use
 
 **Error:**
+
 ```
 Error: listen EADDRINUSE: address already in use :::3000
 ```
 
 **Solutions:**
+
 ```bash
 # Find process using port
 lsof -i :3000
@@ -59,13 +67,16 @@ PORT=3001 npm run dev
 ### 4. Environment Variables Not Loaded
 
 **Error:**
+
 ```
 Invalid `prisma.model.findMany()` invocation
 Database URL must start with `postgresql://`
 ```
 
 **Solution:**
+
 1. Copy `.env.example` to `.env.local`:
+
    ```bash
    cp .env.example .env.local
    ```
@@ -78,12 +89,15 @@ Database URL must start with `postgresql://`
 ### 5. Build Fails
 
 **Error:**
+
 ```
 Type error: Cannot find module '...'
 ```
 
 **Solutions:**
+
 1. Clean install:
+
    ```bash
    rm -rf node_modules package-lock.json
    npm install
@@ -97,11 +111,13 @@ Type error: Cannot find module '...'
 ### 6. Husky Not Working
 
 **Error:**
+
 ```
 .husky/pre-commit: No such file or directory
 ```
 
 **Solution:**
+
 ```bash
 npm install
 npx husky install
@@ -110,12 +126,15 @@ npx husky install
 ### 7. TypeScript Errors
 
 **Error:**
+
 ```
 Type 'string' is not assignable to type '...'
 ```
 
 **Solutions:**
+
 1. Run typecheck:
+
    ```bash
    npm run typecheck
    ```
@@ -128,11 +147,13 @@ Type 'string' is not assignable to type '...'
 ### 8. ESLint Errors
 
 **Error:**
+
 ```
 error: ... is defined but never used
 ```
 
 **Solution:**
+
 ```bash
 # Auto-fix
 npm run lint -- --fix
@@ -141,11 +162,13 @@ npm run lint -- --fix
 ### 9. Database Migration Issues
 
 **Error:**
+
 ```
 Migration `20260101_...` was already applied
 ```
 
 **Solution:**
+
 ```bash
 # Reset database (dev only!)
 npx prisma migrate reset
@@ -157,6 +180,7 @@ npx prisma migrate resolve --applied migration_name
 ### 10. API Returns 500
 
 **Check:**
+
 1. Server logs for error message
 2. Database connection
 3. Environment variables
@@ -176,12 +200,15 @@ npm run dev  # Look at terminal output
 **Error:** Blank page at `/mindmap` or React Flow errors
 
 **Solutions:**
+
 1. Verify dependencies installed:
+
    ```bash
    npm list @xyflow/react zustand
    ```
 
 2. Check for build errors:
+
    ```bash
    npm run build
    ```
@@ -191,11 +218,13 @@ npm run dev  # Look at terminal output
 ### 12. Ideas Not Appearing on Mindmap
 
 **Possible causes:**
+
 1. Database empty — create some ideas first via `/api/ideas`
 2. API error — check browser Network tab
 3. State not synced — refresh page
 
 **Solution:**
+
 ```bash
 # Check if API returns data
 curl http://localhost:3000/api/mindmap
@@ -208,6 +237,7 @@ curl http://localhost:3000/api/mindmap
 **Error:** Connection modal doesn't appear or connection fails
 
 **Solutions:**
+
 1. Drag from the bottom handle of one node to the top handle of another
 2. Check browser console for errors
 3. Verify `POST /api/connections` works:
@@ -222,6 +252,7 @@ curl http://localhost:3000/api/mindmap
 **Symptoms:** Slow rendering with many nodes, laggy interactions
 
 **Solutions:**
+
 1. Reduce visible nodes (use subtree API for large graphs)
 2. Disable animations: `defaultEdgeOptions={{ animated: false }}`
 3. Increase React Flow performance settings
@@ -237,6 +268,7 @@ curl http://localhost:3000/api/mindmap
 **Error:** Slow queries as data grows
 
 **Solution:**
+
 ```bash
 # Apply schema changes (includes new indexes)
 npm run db:push

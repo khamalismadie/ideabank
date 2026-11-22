@@ -44,6 +44,6 @@ flowchart LR
 
 - [Deployment Guide](deployment.md)
 - [Architecture](../02-architecture/system-architecture.md)
-- [Troubleshooting](../troubleshooting.md)
+- [Troubleshooting](troubleshooting.md)
 - [PRD](../01-product/product-requirements.md)
 - [Contributing](../CONTRIBUTING.md)
