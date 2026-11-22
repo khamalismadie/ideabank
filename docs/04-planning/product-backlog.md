@@ -1,6 +1,6 @@
 # PRD Backlog — Sprint
 
-Sprint backlog derived from the product [PRD](../PRD.md) (user stories P0 / P1 / P2, phases MVP / V1 / V2 / V3).
+Sprint backlog derived from the product [PRD](../01-product/product-requirements.md) (user stories P0 / P1 / P2, phases MVP / V1 / V2 / V3).
 
 ## Sprint Goal
 
@@ -35,4 +35,4 @@ Deliver the MVP core loop: users can create, connect, and visualize ideas as a m
 - **Review:** demo + PR merge
 - **Retro:** improve process, update backlog
 
-See also: [Implementation Plan](implementation-plan.md), [PRD](../PRD.md).
+See also: [Implementation Plan](../03-engineering/engineering-blueprint.md), [PRD](../01-product/product-requirements.md).

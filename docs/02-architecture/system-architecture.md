@@ -7,20 +7,20 @@ graph TB
     Client[React Client] --> API[Next.js API Routes]
     API --> DB[(PostgreSQL)]
     API --> AI[AI Provider]
-    
+
     subgraph Frontend
         Client
         Mindmap[Mindmap Viewer - React Flow]
         IdeaPanel[Idea Panel]
         NodeComponent[Idea Node]
     end
-    
+
     subgraph Backend
         API
         Validation[Zod Validation]
         Logging[Pino Logger]
     end
-    
+
     subgraph Data
         DB
         Prisma[Prisma ORM]
@@ -71,15 +71,15 @@ ideabank/
 
 ## Tech Stack Details
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| UI Framework | Next.js 14 | Full-stack React framework |
-| Mindmap | React Flow (@xyflow/react) | Interactive node-based graph |
-| State | Zustand | Lightweight state management |
-| Styling | Tailwind CSS | Utility-first CSS |
-| Database | PostgreSQL + Prisma | ORM with type safety |
-| Validation | Zod | Schema validation |
-| Logging | Pino | Structured logging |
+| Layer        | Technology                 | Purpose                      |
+| ------------ | -------------------------- | ---------------------------- |
+| UI Framework | Next.js 14                 | Full-stack React framework   |
+| Mindmap      | React Flow (@xyflow/react) | Interactive node-based graph |
+| State        | Zustand                    | Lightweight state management |
+| Styling      | Tailwind CSS               | Utility-first CSS            |
+| Database     | PostgreSQL + Prisma        | ORM with type safety         |
+| Validation   | Zod                        | Schema validation            |
+| Logging      | Pino                       | Structured logging           |
 
 ## Data Flow
 

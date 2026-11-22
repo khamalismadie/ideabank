@@ -61,18 +61,18 @@ Navigate to the mindmap view at [http://localhost:3000/mindmap](http://localhost
 
 ### Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | Run TypeScript compiler |
-| `npm test` | Run tests |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run db:push` | Push schema to database |
-| `npm run db:seed` | Seed database with sample data |
-| `npm run db:studio` | Open Prisma Studio |
+| Command              | Description                    |
+| -------------------- | ------------------------------ |
+| `npm run dev`        | Start development server       |
+| `npm run build`      | Build for production           |
+| `npm run start`      | Start production server        |
+| `npm run lint`       | Run ESLint                     |
+| `npm run typecheck`  | Run TypeScript compiler        |
+| `npm test`           | Run tests                      |
+| `npm run test:watch` | Run tests in watch mode        |
+| `npm run db:push`    | Push schema to database        |
+| `npm run db:seed`    | Seed database with sample data |
+| `npm run db:studio`  | Open Prisma Studio             |
 
 ## Tech Stack
 
@@ -122,11 +122,13 @@ ideabank/
 ## API Documentation
 
 ### Health Check
+
 ```
 GET /api/health
 ```
 
 ### Ideas
+
 ```
 GET    /api/ideas           # List ideas (supports ?search, ?tagId, ?page, ?limit)
 POST   /api/ideas           # Create idea
@@ -136,6 +138,7 @@ DELETE /api/ideas/:id       # Delete idea
 ```
 
 ### Connections
+
 ```
 GET    /api/connections     # List connections
 POST   /api/connections     # Create connection
@@ -143,6 +146,7 @@ DELETE /api/connections/:id # Delete connection
 ```
 
 ### Tags
+
 ```
 GET    /api/tags            # List tags
 POST   /api/tags            # Create tag
@@ -152,12 +156,14 @@ GET    /api/tags/:id/ideas  # Get ideas by tag
 ```
 
 ### Mindmap
+
 ```
 GET    /api/mindmap         # Get full graph (nodes + edges)
 GET    /api/mindmap/:rootId # Get subtree from root idea
 ```
 
 ### AI Features
+
 ```
 POST   /api/ai/expand       # Generate sub-ideas from a parent idea
 POST   /api/ai/connect      # Suggest relationships between ideas
@@ -166,30 +172,30 @@ POST   /api/ai/summarize    # Summarize an idea branch
 
 Set `AI_PROVIDER=claude` in environment to use Claude instead of OpenAI. AI features work with mock responses if no API key is configured.
 
-Full API spec: [PRD.md](PRD.md)
+Full API spec: [PRD.md](docs/01-product/product-requirements.md)
 
 ## Documentation
 
-- [Architecture](docs/architecture.md) - System design and decisions
-- [Deployment](docs/deployment.md) - Vercel, Docker, Railway, self-hosted
+- [Architecture](docs/02-architecture/system-architecture.md) - System design and decisions
+- [Deployment](docs/06-production/deployment.md) - Vercel, Docker, Railway, self-hosted
 - [Environment Variables](docs/env-reference.md) - All configuration options
 - [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
 
 ## Roadmap
 
-| Phase | Features | Status |
-|-------|----------|--------|
-| MVP | CRUD + Mindmap visualization | ✅ Complete |
-| V1 | Tags + Search + Export | ✅ Complete |
-| V2 | AI features (expand, connect, summarize) | ✅ Complete |
-| V3 | Auth + Collaboration | Planned |
+| Phase | Features                                 | Status      |
+| ----- | ---------------------------------------- | ----------- |
+| MVP   | CRUD + Mindmap visualization             | ✅ Complete |
+| V1    | Tags + Search + Export                   | ✅ Complete |
+| V2    | AI features (expand, connect, summarize) | ✅ Complete |
+| V3    | Auth + Collaboration                     | Planned     |
 
 ## Related Projects
 
-| Project | Description |
-|---------|-------------|
+| Project                                                             | Description                                                                                              |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | [Component Atlas](https://github.com/khamalismadie/Component-atlas) | Interactive visual map for React codebases — dependency graphs, re-render heatmaps, bundle size analysis |
-| [PromptKit](https://clawhub.ai/khamalismadie/skills/promptkit) | Auto-selects and applies prompting frameworks from 56 options for structured AI prompts |
+| [PromptKit](https://clawhub.ai/khamalismadie/skills/promptkit)      | Auto-selects and applies prompting frameworks from 56 options for structured AI prompts                  |
 
 ## Contributing
 

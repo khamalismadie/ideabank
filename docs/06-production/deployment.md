@@ -53,7 +53,7 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/ideabank
     depends_on:

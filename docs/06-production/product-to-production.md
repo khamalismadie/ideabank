@@ -43,7 +43,7 @@ flowchart LR
 ## Related Docs
 
 - [Deployment Guide](deployment.md)
-- [Architecture](architecture.md)
-- [Troubleshooting](troubleshooting.md)
-- [PRD](../PRD.md)
+- [Architecture](../02-architecture/system-architecture.md)
+- [Troubleshooting](../troubleshooting.md)
+- [PRD](../01-product/product-requirements.md)
 - [Contributing](../CONTRIBUTING.md)
